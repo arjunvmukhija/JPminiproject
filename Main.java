@@ -1,68 +1,68 @@
 import java.util.*;
 import java.io.*;
 
-class Mobile {
+class Kidswear {
     int id;
     String brand;
-    String model;
+    String name;
     double price;
     int quantity;
 
-    Mobile(int id, String brand, String model, double price, int quantity) {
+    Kidswear(int id, String brand, String name, double price, int quantity) {
         this.id = id;
         this.brand = brand;
-        this.model = model;
+        this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
 
     public String toString() {
-        return id + " | " + brand + " | " + model + " | ₹" + price + " | Qty: " + quantity;
+        return id + " | " + brand + " | " + name + " | ₹" + price + " | Qty: " + quantity;
     }
 }
 
 class Inventory {
-    ArrayList<Mobile> mobiles = new ArrayList<>();
+    ArrayList<Kidswear> kidswear = new ArrayList<>();
 
-    void addMobile(Mobile m) {
-        mobiles.add(m);
+    void addItem(Kidswear k) {
+        kidswear.add(k);
     }
 
-    void viewMobiles() {
-        if (mobiles.isEmpty()) {
-            System.out.println("No mobiles in inventory.");
+    void viewItems() {
+        if (kidswear.isEmpty()) {
+            System.out.println("No items in inventory.");
             return;
         }
-        for (Mobile m : mobiles) {
-            System.out.println(m);
+        for (Kidswear k : kidswear) {
+            System.out.println(k);
         }
     }
 
-    void searchMobile(int id) {
-        for (Mobile m : mobiles) {
-            if (m.id == id) {
-                System.out.println("Found: " + m);
+    void searchItem(int id) {
+        for (Kidswear k : kidswear) {
+            if (k.id == id) {
+                System.out.println("Found: " + k);
                 return;
             }
         }
-        System.out.println("Mobile not found.");
+        System.out.println("Item not found.");
     }
 
-    void updateMobile(int id, int qty) {
-        for (Mobile m : mobiles) {
-            if (m.id == id) {
-                m.quantity = qty;
+    void updateItem(int id, int qty) {
+        for (Kidswear k : kidswear) {
+            if (k.id == id) {
+                k.quantity = qty;
                 return;
             }
         }
-        System.out.println("Mobile not found.");
+        System.out.println("Item not found.");
     }
 
-    void deleteMobile(int id) {
-        mobiles.removeIf(m -> m.id == id);
+    void deleteItem(int id) {
+        kidswear.removeIf(k -> k.id == id);
     }
 
-    // Load CSV automatically
+    // Load CSV
     void loadFromCSV(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -73,11 +73,11 @@ class Inventory {
 
                 int id = Integer.parseInt(data[0].trim());
                 String brand = data[1].trim();
-                String model = data[2].trim();
+                String name = data[2].trim();
                 double price = Double.parseDouble(data[3].trim());
                 int qty = Integer.parseInt(data[4].trim());
 
-                mobiles.add(new Mobile(id, brand, model, price, qty));
+                kidswear.add(new Kidswear(id, brand, name, price, qty));
             }
 
             System.out.println("CSV auto-loaded successfully.");
@@ -86,13 +86,13 @@ class Inventory {
         }
     }
 
-    // Save back to CSV (permanent update)
+    // Save CSV
     void saveToCSV(String filePath) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filePath))) {
-            pw.println("id,brand,model,price,quantity");
+            pw.println("id,brand,name,price,quantity");
 
-            for (Mobile m : mobiles) {
-                pw.println(m.id + "," + m.brand + "," + m.model + "," + m.price + "," + m.quantity);
+            for (Kidswear k : kidswear) {
+                pw.println(k.id + "," + k.brand + "," + k.name + "," + k.price + "," + k.quantity);
             }
 
             System.out.println("CSV updated successfully.");
@@ -107,16 +107,16 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Inventory inv = new Inventory();
 
-        String file = "mobiles.csv"; // same folder
-        inv.loadFromCSV(file); // auto-load at start
+        String file = "kidswear.csv";
+        inv.loadFromCSV(file);
 
         while (true) {
-            System.out.println("\n--- Mobile Inventory System ---");
-            System.out.println("1. Add Mobile");
-            System.out.println("2. View Mobiles");
-            System.out.println("3. Search Mobile");
+            System.out.println("\n--- Kidswear Inventory System ---");
+            System.out.println("1. Add Item");
+            System.out.println("2. View Items");
+            System.out.println("3. Search Item");
             System.out.println("4. Update Quantity");
-            System.out.println("5. Delete Mobile");
+            System.out.println("5. Delete Item");
             System.out.println("6. Exit (Save)");
             System.out.print("Enter choice: ");
 
@@ -127,42 +127,48 @@ public class Main {
                     System.out.print("Enter ID: ");
                     int id = sc.nextInt();
                     sc.nextLine();
+
                     System.out.print("Enter Brand: ");
                     String brand = sc.nextLine();
-                    System.out.print("Enter Model: ");
-                    String model = sc.nextLine();
+
+                    System.out.print("Enter Item Name: ");
+                    String name = sc.nextLine();
+
                     System.out.print("Enter Price: ");
                     double price = sc.nextDouble();
+
                     System.out.print("Enter Quantity: ");
                     int qty = sc.nextInt();
 
-                    inv.addMobile(new Mobile(id, brand, model, price, qty));
+                    inv.addItem(new Kidswear(id, brand, name, price, qty));
                     break;
 
                 case 2:
-                    inv.viewMobiles();
+                    inv.viewItems();
                     break;
 
                 case 3:
                     System.out.print("Enter ID to search: ");
-                    inv.searchMobile(sc.nextInt());
+                    inv.searchItem(sc.nextInt());
                     break;
 
                 case 4:
                     System.out.print("Enter ID to update: ");
                     int uid = sc.nextInt();
+
                     System.out.print("Enter new quantity: ");
                     int newQty = sc.nextInt();
-                    inv.updateMobile(uid, newQty);
+
+                    inv.updateItem(uid, newQty);
                     break;
 
                 case 5:
                     System.out.print("Enter ID to delete: ");
-                    inv.deleteMobile(sc.nextInt());
+                    inv.deleteItem(sc.nextInt());
                     break;
 
                 case 6:
-                    inv.saveToCSV(file); // save permanently
+                    inv.saveToCSV(file);
                     System.out.println("Exiting...");
                     return;
 
@@ -171,4 +177,4 @@ public class Main {
             }
         }
     }
-}   
+}
