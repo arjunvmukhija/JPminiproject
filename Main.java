@@ -17,7 +17,7 @@ class Kidswear {
     }
 
     public String toString() {
-        return id + " | " + brand + " | " + name + " | ₹" + price + " | Qty: " + quantity;
+        return id + " | " + brand + " | " + name + " | Rs." + price + " | Qty: " + quantity;
     }
 }
 
