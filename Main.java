@@ -34,14 +34,14 @@ class Inventory {
             return;
         }
         for (Kidswear k : kidswear) {
-            System.out.println(k);
+            System.out.println(k.toString());
         }
     }
 
     void searchItem(int id) {
         for (Kidswear k : kidswear) {
             if (k.id == id) {
-                System.out.println("Found: " + k);
+                System.out.println("Found: " + k.toString());
                 return;
             }
         }
@@ -86,7 +86,7 @@ class Inventory {
         }
     }
 
-    // Save CSV
+    
     void saveToCSV(String filePath) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filePath))) {
             pw.println("id,brand,name,price,quantity");
@@ -120,9 +120,9 @@ public class Main {
             System.out.println("6. Exit (Save)");
             System.out.print("Enter choice: ");
 
-            int ch = sc.nextInt();
+            int choice = sc.nextInt();
 
-            switch (ch) {
+            switch (choice) {
                 case 1:
                     System.out.print("Enter ID: ");
                     int id = sc.nextInt();
